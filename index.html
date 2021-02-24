@@ -1,0 +1,440 @@
+<html>
+<head> 
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+table.center {
+  margin-left: auto; 
+  margin-right: auto;
+}	
+
+
+.button {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+}
+
+</style>
+</head>
+<title>An EM approach to audio restoration</title>
+</head>
+<body>
+
+<a href="index.html" class="button">Back to main site</a>
+
+<h1>An EM algorithm for variable selection and coefficient estimation in audio reconstruction</h1> 
+<br><table border="0" width="100%">
+
+
+
+<hr>
+<p>Sparse representations have played a key role in the development of signal processing over recent decades, and have been widely applied to audio signal processing tasks such as denoising or compression. Heavy-tailed priors and ℓ<sub>1</sub>-norm regularization schemes are a popular tool to promote sparsity on the model coefficients, owing significantly to their suitability for efficient estimation strategies. On the other hand, spike-and-slab priors explicitly model the inclusion of each coefficient within the sparse set, facilitating the representation of arbitrarily complex networks of dependencies between variables—a desirable feature in many applications. However, devising fast optimization strategies to compute this class of models has typically been an elusive task; in most cases, practitioners must resort to costly Monte Carlo sampling algorithms. Relying on a conjugate mixture prior formulation that allows for closed-form Expectation-maximization updates, we propose here a framework to perform efficient joint variable selection and coefficient estimation in time-frequency dictionaries (such as Gabor frames) under problem-specific prior constraints—namely, structured a priori variable inclusion probabilities intended to reflect the typical time-frequency persistence patterns found in audio signals, and heavy-tailed priors on synthesis coefficients aimed at capturing the wide range of values expected in non-stationary processes. Applications to audio denoising, missing data interpolation and transient identification are presented.
+</p>
+
+<br>
+Contact email: <a href="mailto:rmc83@cam.ac.uk">rmc83 at cam dot at dot uk</a>
+<br>
+
+<hr>
+
+<h2>Denoising + transient characterization</h2>
+
+<table style="width:100%">
+    <tr>
+        <th align="center">Example</th>
+		<th align="center">Input SNR</th>
+		<th align="center">Input signal</th>
+        <th align="center">Unstructured</th>
+        <th align="center">Markov chain prior</th>
+        <th align="center">2 layers </th>
+		<th align="center">Transient layer (isolated) </th>
+        <th align="center">Wiener</th>
+    </tr>
+    <tr>
+        <td align="center" rowspan="3">
+            <div style="width:100%;word-break: break-all">Piano</div>
+        </td>
+        <td align="center">0</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/1_input_0_3216.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_unstruct_0_5591.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_1L_0_12544.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_2L_0_21719.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/1_2L_0_transient_21719.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/1_wiener_0_5968.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center">10</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/1_input_10_3414.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_unstruct_10_2880.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_1L_10_14090.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_2L_10_25256.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/1_2L_10_transient_25256.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/1_wiener_10_1644.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center">20</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/1_input_20_4234.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_unstruct_20_3514.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_1L_20_12366.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_1/1_2L_20_21895.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/1_2L_20_transient_21895.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/1_wiener_20_2783.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+	
+    <tr>
+        <td align="center" rowspan="3">
+            <div style="width:100%;word-break: break-all">Glockenspiel</div>
+        </td>
+        <td align="center">0</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/2_input_0_1441.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_unstruct_0_2841.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_1L_0_14938.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_2L_0_21829.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/2_2L_0_transient_21829.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/2_wiener_0_4131.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center">10</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/2_input_10_3842.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_unstruct_10_5386.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_1L_10_10868.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_2L_10_24641.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/2_2L_10_transient_24641.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/2_wiener_10_2435.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center">20</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/2_input_20_539.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_unstruct_20_4558.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_1L_20_14203.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_2/2_2L_20_24150.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/2_2L_20_transient_24150.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/2_wiener_20_4467.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center" rowspan="3">
+            <div style="width:100%;word-break: break-all">Strings</div>
+        </td>
+        <td align="center">0</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/3_input_0_2730.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_unstruct_0_551.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_1L_0_10872.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_2L_0_22945.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/3_2L_0_transient_22945.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/3_wiener_0_1457.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center">10</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/3_input_10_1592.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_unstruct_10_3218.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_1L_10_13150.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_2L_10_22179.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/3_2L_10_transient_22179.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/3_wiener_10_1168.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+    <tr>
+        <td align="center">20</td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/input/3_input_20_1355.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_unstruct_20_1589.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_1L_20_15713.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/case_3/3_2L_20_20939.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+		<td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/transients/3_2L_20_transient_20939.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+        <td align="center"><audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_short/wiener/3_wiener_20_2344.wav" type="audio/wav">
+		Your browser does not support the audio element.
+		</audio></td>
+    </tr>
+</table>
+
+
+<hr>
+
+<h2>Denoising a long excerpt</h2>
+<table style="width:100%" >
+  <tr align="center">
+    <th>Example</th>
+	<th>Clean signal</th>
+	<th>Input signal</th>
+    <th>Unstructured</th>
+	<th>Markov chain prior</th>
+	<th>2 layers</th>
+	<th>Transient layer</th>
+  </tr>
+  <tr align="center">
+    <td>Mamavatu - Susheela Raman</td>
+	<td>
+		<audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_long/polyphonic_clean.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+    <td>
+		<audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_long/polyphonic_input_13dB.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+	<td>
+		<audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_long/polyphonic_unstruct_5225.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio></td>
+	<td>
+		<audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_long/polyphonic_1L_13244.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio></td>
+	<td>
+		<audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_long/polyphonic_2L_20585.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio></td>
+	<td>
+		<audio controls style="width: 185px;">
+		<source src="audio/EM/denoising_long/polyphonic_2L_transient_20585.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+  </tr>
+  
+  
+</table> 
+
+
+
+<hr>
+
+<h2>Missing data interpolation</h2>
+
+ <table style="width:100%" >
+  <tr align="center">
+    <th>Example</th>
+    <th> % missing</th>
+	<th>Clean source</th>
+    <th>Input signal</th>
+	<th>Output (unstructured)</th>
+	<th>Output (1 layer Markov chain)</th>
+  </tr>
+  <tr align="center">
+    <td>Glockenspiel</td>
+    <td>38.84%</td>
+	<td>
+		<audio controls>
+		<source src="audio/EM/missing/glockenspiel_missing_clean.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+    <td>
+		<audio controls>
+		<source src="audio/EM/missing/glockenspiel_missing_input.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+	<td>
+		<audio controls>
+		<source src="audio/EM/missing/glockenspiel_unstruct.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	<td>
+		<audio controls>
+		<source src="audio/EM/missing/glockenspiel_1L.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+  </tr>
+  <tr align="center">
+    <td>Trumpet</td>
+	<td>38.67%</td>
+	<td>
+		<audio controls>
+		<source src="audio/EM/missing/trumpet_missing_clean.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+    <td>
+		<audio controls>
+		<source src="audio/EM/missing/trumpet_missing_input.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	</td>
+	<td>
+		<audio controls>
+		<source src="audio/EM/missing/missing_unstruct_14408_26443.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+	<td>
+		<audio controls>
+		<source src="audio/EM/missing/missing_1L_14408_26443.wav" type="audio/wav">
+		Your browser does not support the audio element.
+	</audio>
+  </tr>
+  
+</table> 
+
+</font></body></html>
